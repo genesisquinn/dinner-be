@@ -1,14 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const Recipe = require('../models/Recipe')
+const multer = require('multer');
+const path = require('path');
 
 
-router.post('/', async (req, res) => {
+
+router.post('/', upload.single('image'), async (req, res) => {
     console.log(req.body);
 
     try {
 
         const { name, instructions, ingredients, category, image } = req.body;
+
+        const newImageName = req.file.filename;
 
 
         const newRecipe = new Recipe({
@@ -16,7 +21,7 @@ router.post('/', async (req, res) => {
             instructions,
             ingredients,
             category,
-            image,
+            image: newImageName,
         });
 
 

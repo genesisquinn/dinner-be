@@ -2,7 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const recipeRoutes = require('./routes/recipeRoutes');
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
+const authRouter = require('./routes/oauth');
+const requestRouter = require('./routes/request');
+const cors = require('cors');
+
+
 
 dotenv.config()
 
@@ -11,16 +16,20 @@ const PORT = process.env.PORT || 3000;
 const MONGO_DB_URI = process.env.MONGO_DB_URI;
 
 
+
 mongoose.connect(MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDB Atlas'))
     .catch((err) => console.error('Error connecting to MongoDB Atlas:', err));
 
 
-
+app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use('/api/recipes', recipeRoutes);
+app.use('/oauth', authRouter);
+app.use('/request', requestRouter);
+
 
 
 app.listen(PORT, () => {
