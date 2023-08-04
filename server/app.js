@@ -2,7 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const recipeRoutes = require('./routes/recipeRoutes');
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
+const authRouter = require('./routes/oauth');
+const requestRouter = require('./routes/request');
 
 dotenv.config()
 
@@ -21,6 +23,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use('/api/recipes', recipeRoutes);
+app.use('/oauth', authRouter);
+app.use('/request', requestRouter);
+
 
 
 app.listen(PORT, () => {
