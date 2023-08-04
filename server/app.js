@@ -5,12 +5,15 @@ const recipeRoutes = require('./routes/recipeRoutes');
 const dotenv = require('dotenv');
 const authRouter = require('./routes/oauth');
 const requestRouter = require('./routes/request');
+const cors = require('cors');
 
 dotenv.config()
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const MONGO_DB_URI = process.env.MONGO_DB_URI;
+
+app.use(cors());
 
 
 mongoose.connect(MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
