@@ -15,7 +15,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const MONGO_DB_URI = process.env.MONGO_DB_URI;
 
-app.use(cors());
 
 
 mongoose.connect(MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -23,7 +22,7 @@ mongoose.connect(MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true
     .catch((err) => console.error('Error connecting to MongoDB Atlas:', err));
 
 
-
+app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
