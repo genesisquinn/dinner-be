@@ -33,3 +33,5 @@ router.get('/', async (req, res, next) => {
         console.log('Error signing in with Google')
     }
 })
+
+module.exports = router;
