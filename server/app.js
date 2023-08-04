@@ -12,6 +12,9 @@ const cors = require('cors');
 dotenv.config()
 
 const app = express();
+const corsOptions = {
+    origin: 'https://main--dinnermadeeasy.netlify.app/submit-recipe'
+}
 const PORT = process.env.PORT || 3000;
 const MONGO_DB_URI = process.env.MONGO_DB_URI;
 
@@ -22,11 +25,12 @@ mongoose.connect(MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true
     .catch((err) => console.error('Error connecting to MongoDB Atlas:', err));
 
 
-app.use(cors());
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(cors(corsOptions));
+app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/api/recipes', recipeRoutes);
+app.use('/recipes', recipeRoutes);
 app.use('/oauth', authRouter);
 app.use('/request', requestRouter);
 
