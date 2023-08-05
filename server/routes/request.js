@@ -9,7 +9,7 @@ router.post('/', async (req, res, next) => {
     res.header('Acess-Control-Allow-Origin', 'https://dinnermadeeasy.netlify.app/');
     // res.header('Referrer-Policy', 'no-referrer-when-downgrade');
 
-    const redirectUrl = 'https://dinnermadeeasy.netlify.app/recipes';
+    const redirectUrl = 'https://dinner-made-easy.onrender.com';
 
     const oAuth2Client = new OAuth2Client(
         process.env.CLIENT_ID,
@@ -17,7 +17,7 @@ router.post('/', async (req, res, next) => {
         redirectUrl 
     );
     const authorizeUrl = oAuth2Client.generateAuthUrl({
-        access_type:'offline',
+        // access_type:'offline',
         scope:'https://www.googleapis.com/auth/userinfor.profile openid',
         prompt: 'consent'
 

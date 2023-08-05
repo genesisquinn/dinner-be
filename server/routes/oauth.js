@@ -16,7 +16,7 @@ router.get('/', async (req, res, next) => {
 
     const code = req.query.code;
     try{
-        const redirectUrl =  'https://dinnermadeeasy.netlify.app/recipes';
+        const redirectUrl =  'https://dinner-made-easy.onrender.com';
         const oAuth2Client = new OAuth2Client(
             process.env.CLIENT_ID,
             process.env.CLIENT_SECRET,
@@ -32,7 +32,7 @@ router.get('/', async (req, res, next) => {
     } catch(err){
         console.log('Error signing in with Google')
     }
-    res.redirect(303, 'https://dinnermadeeasy.netlify.app/recipes');
+    // res.redirect(303, 'https://dinnermadeeasy.netlify.app/recipes');
 });
 
 module.exports = router;
