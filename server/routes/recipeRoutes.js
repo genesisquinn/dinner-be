@@ -3,6 +3,7 @@ const router = express.Router();
 const Recipe = require('../models/Recipe');
 const path = require('path');
 const multer = require('multer');
+const { uploadFileToStorage } = require('../gcp')
 
 const upload = multer({
     storage: multer.memoryStorage()
@@ -12,35 +13,39 @@ const upload = multer({
 
 router.post('/', upload.single('image'), async (req, res) => {
     console.log(req.body);
-
-    try {
-
-        const { name, instructions, ingredients, category, image } = req.body;
-
-        const newImageName = req.file.filename;
-
-
-        const newRecipe = new Recipe({
-            name,
-            instructions,
-            ingredients,
-            category,
-            image: newImageName,
-        });
-
-
-        await newRecipe.save();
-
-        res.status(201).json({
-            message: 'Recipe added successfully',
-            recipe: newRecipe
-        });
-
-    } catch (err) {
-
-        res.status(500).json({ msg: err, error: 'An error occurred while saving the recipe.' });
-    }
+    const url = await uploadFileToStorage(req.file);
+    res.json({sucess: true, url});
+    
 });
+    
+//     try {
+
+//         const { name, instructions, ingredients, category, image } = req.body;
+
+//         const newImageName = req.file.filename;
+
+
+//         const newRecipe = new Recipe({
+//             name,
+//             instructions,
+//             ingredients,
+//             category,
+//             image: newImageName,
+//         });
+
+
+//         await newRecipe.save();
+
+//         res.status(201).json({
+//             message: 'Recipe added successfully',
+//             recipe: newRecipe
+//         });
+
+//     } catch (err) {
+
+//         res.status(500).json({ msg: err, error: 'An error occurred while saving the recipe.' });
+//     }
+// });
 
 
 router.get('/', async (req, res) => {
