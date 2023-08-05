@@ -13,8 +13,8 @@ dotenv.config()
 
 const app = express();
 const corsOptions = {
-    // origin: 'https://main--dinnermadeeasy.netlify.app/submit-recipe'
-    origin: 'http://localhost:5173',
+    origin: 'https://dinnermadeeasy.netlify.app'
+    // origin: 'http://localhost:5173',
     // origin: 'http://localhost:3000/recipes'
 }
 const PORT = process.env.PORT || 3000;
