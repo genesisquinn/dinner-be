@@ -13,7 +13,8 @@ dotenv.config()
 
 const app = express();
 const corsOptions = {
-    origin: 'https://dinnermadeeasy.netlify.app'
+    // origin: 'https://dinnermadeeasy.netlify.app'
+    origin: 'http://localhost:5173'
 }
 const PORT = process.env.PORT || 3000;
 const MONGO_DB_URI = process.env.MONGO_DB_URI;
