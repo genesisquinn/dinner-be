@@ -9,7 +9,6 @@ const upload = multer({
     storage: multer.memoryStorage()
 })
 
-const uploadFileToStorage = require('../path/to/uploadFileToStorage');
 
 router.post('/', upload.single('image'), async (req, res) => {
     try {
