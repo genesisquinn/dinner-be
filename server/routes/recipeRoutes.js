@@ -14,16 +14,16 @@ router.post('/', upload.single('image'), async (req, res) => {
     try {
         const { name, instructions, ingredients, category } = req.body;
 
-        // If ingredients is provided as a JSON-encoded string, parse it into an array
         const parsedIngredients = typeof ingredients === 'string' ? JSON.parse(ingredients) : ingredients;
 
         const imageUrl = await uploadFileToStorage(req.file);
 
         const newRecipe = new Recipe({
-            name,
-            instructions,
-            ingredients: parsedIngredients,
-            category,
+            name: req.body.name,
+            description: req.body.description,
+            email: req.body.email,
+            ingredients: req.body.ingredients,
+            category: req.body.category,
             image: imageUrl,
         });
 
@@ -38,7 +38,6 @@ router.post('/', upload.single('image'), async (req, res) => {
     }
 });
 
-
 router.get('/', async (req, res) => {
     try {
         const recipes = await Recipe.find();
@@ -51,22 +50,21 @@ router.get('/', async (req, res) => {
     }
 });
 
+
 router.get('/:id', async (req, res) => {
     try {
         const recipeId = req.params.id;
-
+        console.log(recipeId)
         const recipe = await Recipe.findById(recipeId);
+        console.log(recipe)
 
         if (!recipe) {
             return res.status(404).json({ error: 'Recipe not found.' });
         }
 
-        res.status(200).json({
-            success: true,
-            recipe: recipe,
-        });
-    } catch (err) {
-        res.status(500).json({ error: 'An error occurred while fetching the recipe.' });
+        res.json({success:true, recipe});
+    } catch (error) {
+        res.status(500).json({ message: error.message || 'Error Occurred' });
     }
 });
 
