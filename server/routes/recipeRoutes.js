@@ -9,14 +9,39 @@ const upload = multer({
     storage: multer.memoryStorage()
 })
 
-
+const uploadFileToStorage = require('../path/to/uploadFileToStorage');
 
 router.post('/', upload.single('image'), async (req, res) => {
-    console.log(req.body);
-    const url = await uploadFileToStorage(req.file);
-    res.json({sucess: true, url});
-    
+    try {
+        const { name, instructions, ingredients, category } = req.body;
+        const imageUrl = await uploadFileToStorage(req.file);
+
+        const newRecipe = new Recipe({
+            name,
+            instructions,
+            ingredients,
+            category,
+            image: imageUrl,
+        });
+
+        await newRecipe.save();
+
+        res.status(201).json({
+            message: 'Recipe added successfully',
+            recipe: newRecipe
+        });
+    } catch (err) {
+        res.status(500).json({ msg: err, error: 'An error occurred while saving the recipe.' });
+    }
 });
+
+// router.post('/', upload.single('image'), async (req, res) => {
+//     console.log(req.body);
+//     const url = await uploadFileToStorage(req.file);
+//     await req.db.collection('images').inserOne({url});
+//     res.json({sucess: true, url});
+    
+// });
     
 //     try {
 
