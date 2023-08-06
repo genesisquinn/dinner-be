@@ -28,7 +28,6 @@ mongoose.connect(MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true
 
 app.use(cors(corsOptions));
 app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/recipes', recipeRoutes);

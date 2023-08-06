@@ -13,12 +13,16 @@ const upload = multer({
 router.post('/', upload.single('image'), async (req, res) => {
     try {
         const { name, instructions, ingredients, category } = req.body;
+
+        // If ingredients is provided as a JSON-encoded string, parse it into an array
+        const parsedIngredients = typeof ingredients === 'string' ? JSON.parse(ingredients) : ingredients;
+
         const imageUrl = await uploadFileToStorage(req.file);
 
         const newRecipe = new Recipe({
             name,
             instructions,
-            ingredients,
+            ingredients: parsedIngredients,
             category,
             image: imageUrl,
         });
@@ -27,7 +31,7 @@ router.post('/', upload.single('image'), async (req, res) => {
 
         res.status(201).json({
             message: 'Recipe added successfully',
-            recipe: newRecipe
+            recipe: newRecipe,
         });
     } catch (err) {
         res.status(500).json({ msg: err, error: 'An error occurred while saving the recipe.' });

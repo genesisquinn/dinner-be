@@ -13,7 +13,9 @@ const uploadFileToStorage = async (file) => new Promise((resolve, reject) => {
 
     const bucket = storage.bucket(bucketName);
     const { buffer, originalname } = file;
-    const blob = bucket.file(originalname.replace(/ /g,'_'))
+    console.log({originalname});
+    const blob = bucket.file(originalname.replace(/ /g, "_"));
+    console.log({originalname});
     const blobStream = blob.createWriteStream({resumable: false});
 
     blobStream
