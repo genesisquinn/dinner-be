@@ -15,8 +15,6 @@ router.post('/', upload.single('image'), async (req, res) => {
         const { name, instructions, ingredients, category } = req.body;
         console.log(ingredients)
 
-        // const parsedIngredients = typeof ingredients === 'string' ? JSON.parse(ingredients) : ingredients;
-
         const imageUrl = await uploadFileToStorage(req.file);
 
         const newRecipe = new Recipe({
