@@ -13,17 +13,17 @@ const upload = multer({
 router.post('/', upload.single('image'), async (req, res) => {
     try {
         const { name, instructions, ingredients, category } = req.body;
+        console.log(ingredients)
 
-        const parsedIngredients = typeof ingredients === 'string' ? JSON.parse(ingredients) : ingredients;
+        // const parsedIngredients = typeof ingredients === 'string' ? JSON.parse(ingredients) : ingredients;
 
         const imageUrl = await uploadFileToStorage(req.file);
 
         const newRecipe = new Recipe({
-            name: req.body.name,
-            description: req.body.description,
-            email: req.body.email,
-            ingredients: req.body.ingredients,
-            category: req.body.category,
+            name: name,
+            ingredients: ingredients,
+            instructions: instructions,
+            category: category, 
             image: imageUrl,
         });
 
@@ -34,7 +34,9 @@ router.post('/', upload.single('image'), async (req, res) => {
             recipe: newRecipe,
         });
     } catch (err) {
+        console.log(err)
         res.status(500).json({ msg: err, error: 'An error occurred while saving the recipe.' });
+        
     }
 });
 
@@ -56,7 +58,7 @@ router.get('/:id', async (req, res) => {
         const recipeId = req.params.id;
         console.log(recipeId)
         const recipe = await Recipe.findById(recipeId);
-        console.log(recipe)
+
 
         if (!recipe) {
             return res.status(404).json({ error: 'Recipe not found.' });
@@ -65,6 +67,20 @@ router.get('/:id', async (req, res) => {
         res.json({success:true, recipe});
     } catch (error) {
         res.status(500).json({ message: error.message || 'Error Occurred' });
+    }
+});
+
+router.get('/recipes/search', async (req, res) => {
+    const searchQuery = req.query.query; 
+
+    try {
+        const foundRecipes = await Recipe.find({
+            name: { $regex: searchQuery, $options: 'i' } 
+        });
+        res.status(200).json({ recipes: foundRecipes });
+    } catch (error) {
+        console.error('Error searching recipes:', error);
+        res.status(500).json({ error: 'Error searching recipes' });
     }
 });
 

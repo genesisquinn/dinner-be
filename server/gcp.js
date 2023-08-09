@@ -13,14 +13,14 @@ const uploadFileToStorage = async (file) => new Promise((resolve, reject) => {
 
     const bucket = storage.bucket(bucketName);
     const { buffer, originalname } = file;
-    console.log({originalname});
+    const newName = originalname.replace(/ /g, "_");
     const blob = bucket.file(originalname.replace(/ /g, "_"));
-    console.log({originalname});
+    console.log({newName});
     const blobStream = blob.createWriteStream({resumable: false});
 
     blobStream
         .on('finish',() => {
-            const publicUrl = `https://storage.googleapis.com/${bucketName}/${originalname}`;
+            const publicUrl = `https://storage.googleapis.com/${bucketName}/${newName}`;
             resolve(publicUrl)
         })
         .on('error', (e) =>{
